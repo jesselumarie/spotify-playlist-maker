@@ -16,14 +16,16 @@ const PlayableItem = ({
         justifyContent: "space-between",
         width: "400px",
         height: "100px",
-        marginTop: "20px"
+        marginTop: "20px",
+        border: selected ? "0.k5rem orange dashed" : ""
       }}
     >
       {imageUrl ? (
         <Image
           height={94}
-          width={90}
+          width={94}
           src={imageUrl}
+          layout="fixed"
           alt={`Album art for ${title}`}
         />
       ) : (
@@ -32,7 +34,7 @@ const PlayableItem = ({
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: "90px",
+            width: "94px",
             height: "94px",
             backgroundColor: "blue"
           }}
@@ -46,13 +48,13 @@ const PlayableItem = ({
           flexDirection: "column",
           alignItems: "flex-start",
           padding: "10px",
-          flexGrow: 1,
+          width:"236px"
         }}
       >
         <b>{title}</b>
         <em>{subtitle}</em>
       </div>
-      <button style={{width: "70px"}} onClick={handleButtonClick}>{selected ? "Remove" : "Add"}</button>
+      <button style={{height: "20px", width: "70px"}} onClick={handleButtonClick}>{selected ? "Remove" : "Add"}</button>
     </div>
   );
 };
