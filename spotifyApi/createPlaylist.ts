@@ -1,4 +1,4 @@
-export default async function handleCreatePlaylist({
+export default async function createPlaylist({
   accessToken,
   userId,
   selectedPlaylistIds,

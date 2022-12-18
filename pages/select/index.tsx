@@ -84,9 +84,10 @@ interface GetTracksForPlaylistsArgs {
   playlistId: string;
 }
 
-function getSelectedPlaylistIds(selectedPlaylists) {
-  return Object.keys(selectedPlaylists).filter((pid) => selectedPlaylists[pid]);
+function getSelectedIds(selectableMap) {
+  return Object.keys(selectableMap).filter((pid) => selectableMap[pid]);
 }
+
 
 const SelectScreen: NextPage<Props> = ({
   playlists,
@@ -100,8 +101,8 @@ const SelectScreen: NextPage<Props> = ({
   const [searchCategory, setSearchCategory] = useState(SearchCategory.Playlist)
   const [selectedTracks, setTracks] = useState({});
   const [selectedPlaylists, setPlaylists] = useState({});
-  const selectedCount = getSelectedPlaylistIds(selectedPlaylists).length;
-  console.log(searchCategory)
+  const selectedCount = getSelectedIds(selectedPlaylists).length + getSelectedIds(selectedTracks).length;
+
   return (
     <div className={styles.container}>
       <Head>
@@ -115,23 +116,26 @@ const SelectScreen: NextPage<Props> = ({
           <option value={SearchCategory.Track}>Tracks</option>
       </select>
         {searchCategory === SearchCategory.Playlist ? playlists.map((playlist) => {
-          const selected = selectedPlaylists[playlist.id];
+          const playlistSelected = selectedPlaylists[playlist.id];
+
           return (
             <PlayableItem
               title={playlist.name}
               subtitle={playlist.owner.display_name}
               imageUrl={playlist.images[0]?.url}
               key={playlist.id}
-              selected={selected}
+              selected={playlistSelected}
               handleButtonClick={() =>
                 setPlaylists({
                   ...selectedPlaylists,
-                  ...{ [playlist.id]: !selected },
+                  ...{ [playlist.id]: !playlistSelected },
                 })
               }
             />
           );
+
         }) : tracks.map((track) => {
+          const trackSelected = selectedTracks[track.id];
 
           return (
             <PlayableItem
@@ -139,8 +143,15 @@ const SelectScreen: NextPage<Props> = ({
               subtitle={track.artists.map((a) => a.name).join(',')}
               imageUrl={track.album.images[0]?.url}
               key={track.id}
+              selected={trackSelected}
+              handleButtonClick={() => setTracks({
+                  ...selectedTracks,
+                  ...{ [track.id]: !trackSelected},
+                })
+              }
             />
           );
+
         })}
         <SelectedTracksBanner
           onClick={(title) =>

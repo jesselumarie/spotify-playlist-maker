@@ -48,6 +48,7 @@ const PlayableItem = ({
           flexDirection: "column",
           alignItems: "flex-start",
           padding: "10px",
+          width:"236px"
         }}
       >
         <b>{title}</b>
