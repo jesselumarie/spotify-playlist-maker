@@ -7,6 +7,12 @@
   align-items: center;
 }
 
+@media (prefers-color-scheme: dark) {
+  .container {
+    background-color: black;
+  }
+}
+
 .main {
   padding: 5rem 0;
   flex: 1;

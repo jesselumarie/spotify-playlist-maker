@@ -1,35 +1,5 @@
 import { useState } from "react";
-const footerStyle = {
-  position: "fixed",
-  left: 0,
-  bottom: 0,
-  width: "100%",
-  minHeight: "70px",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  backgroundColor: "white",
-  boxShadow: "0 2px 5px 1px rgb(64 60 67 / 16%)",
-};
-
-const topSectionStyle = {
-  display: "flex",
-  alignItems: "center",
-};
-
-const bottomSectionStyle = {
-  display: "flex",
-  alignItems: "center",
-  marginTop: 10,
-  marginBottom: 10,
-};
-
-const labelStyle = {
-  display: "inline-block",
-  margin: 10,
-  fontWeight: "bold",
-};
+import styles from "../styles/SelectedTracksBanner.module.css"
 
 const defaultTitle = `New Playlist ${new Date().getTime()}`;
 
@@ -38,8 +8,8 @@ function SelectedTracksBanner({ count = 0, onClick }) {
   const [playlistTitle, setTitle] = useState(defaultTitle);
 
   return (
-    <div style={footerStyle}>
-      <div style={topSectionStyle}>
+    <div className={styles.footerStyle}>
+      <div className={styles.topSectionStyle}>
         <p style={{ marginRight: "12px" }}>
           <b>{count} </b> {`${count == 1 ? "item" : "items"} selected`}
         </p>
@@ -55,13 +25,13 @@ function SelectedTracksBanner({ count = 0, onClick }) {
           onClick={() => onClick(playlistTitle)}
           style={{ height: "36px", marginRight: "12px" }}
         >
-          <b>Create playlist ⚡️</b>
+          Create playlist ⚡️
         </button>
       </div>
-      <div style={bottomSectionStyle}>
+      <div className={styles.bottomSectionStyle}>
         {showOptions && (
           <>
-            <label style={labelStyle} htmlFor="playlistTitle">
+            <label className={styles.labelStyle} htmlFor="playlistTitle">
               Playlist Title
             </label>
             <input

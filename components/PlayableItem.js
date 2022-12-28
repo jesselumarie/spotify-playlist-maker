@@ -1,4 +1,5 @@
 import Image from "next/image";
+import styles from "../styles/PlayableItem.module.css";
 
 const PlayableItem = ({
   imageUrl = null,
@@ -7,17 +8,10 @@ const PlayableItem = ({
   handleButtonClick,
   selected,
 }) => {
+  const wrapperClass = `${styles.itemWrapper} ${selected ? styles.selectedItem : ''}`
   return (
     <div
-      style={{
-        display: "flex",
-        borderRadius: 4,
-        justifyContent: "space-between",
-        width: "400px",
-        marginTop: "20px",
-        padding: "8px",
-        border: selected ? "4px orange dashed" : ""
-      }}
+      className={wrapperClass}
     >
       {imageUrl ? (
         <Image

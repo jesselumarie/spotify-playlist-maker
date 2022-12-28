@@ -1,0 +1,39 @@
+.footerStyle {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  min-height: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px 1px rgb(64 60 67 / 16%);
+  padding: 16px;
+}
+
+.topSectionStyle {
+  display: flex;
+  align-items: center;
+}
+
+.bottomSectionStyle {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.labelStyle {
+  display: inline-block;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  .footerStyle {
+    background-color: black;
+  }
+}
+

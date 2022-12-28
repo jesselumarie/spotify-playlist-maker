@@ -1,0 +1,19 @@
+.itemWrapper {
+  display: flex;
+  border-radius: 4;
+  justify-content: space-between;
+  width: 400px;
+  margin-top: 20px;
+  padding: 8px;
+  border: 4px transparent solid;
+}
+
+.selectedItem {
+  border: 4px orange dashed;
+}
+
+@media (prefers-color-scheme: dark) {
+  .selectedItem {
+    border: 4px grey dashed;
+  }
+}
