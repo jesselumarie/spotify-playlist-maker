@@ -1,0 +1,40 @@
+/* The toast - position it at the bottom and in the middle of the screen */
+.toast {
+  background-color: #0074E8; /* Blue background color */
+  text-align: center; /* Centered text */
+  border-radius: 16px; /* Rounded borders */
+  padding: 16px; /* Padding */
+  color: white;
+  position: fixed; /* Sit on top of the screen */
+  z-index: 1; /* Add a z-index if needed */
+  left: 50%; /* Center the toast */
+  transform: translate(-50%, 0px);
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation-fill-mode: forwards;
+  --webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+.errorToast {
+  background-color: red; /* Red background color */
+}
+
+/* Animations to fade the toast in and out */
+@-webkit-keyframes fadein {
+  from {top: 0px; opacity: 0;}
+  to {top: 16px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {top: 0px; opacity: 0;}
+  to {top: 16px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {top: 16px; opacity: 1;}
+  to {top: 0px; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {top: 16px; opacity: 1;}
+  to {top: 0px; opacity: 0;}
+}

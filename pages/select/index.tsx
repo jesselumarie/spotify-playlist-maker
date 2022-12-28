@@ -5,6 +5,7 @@ import { PlayableItem } from "../../components/PlayableItem";
 import { SelectedTracksBanner } from "../../components/SelectedTracksBanner";
 import createPlaylist from "../../spotifyApi/createPlaylist"
 import styles from "../../styles/Home.module.css";
+import toastStyles from "../../styles/Toast.module.css";
 
 
 interface TracksInfo {
@@ -43,7 +44,7 @@ interface Playlist {
     uri: string;
 }
 
-interface PlaylistMap {
+export interface PlaylistMap {
   [key: string]: Playlist | undefined;
 }
 
@@ -61,7 +62,7 @@ export interface Track {
   uri: string;
 }
 
-interface TrackMap {
+export interface TrackMap {
   [key: string]: Track | undefined;
 }
 
@@ -108,6 +109,8 @@ function SelectScreen({
   const [searchCategory, setSearchCategory] = useState(SearchCategory.Playlist)
   const [selectedTracks, setTracks] = useState({} as TrackMap);
   const [selectedPlaylists, setPlaylists] = useState({} as PlaylistMap);
+  const [showToast, setShowToast] = useState(false)
+  const [showErrorToast, setShowErrorToast] = useState(false)
   const selectedCount = getSelectedIds(selectedPlaylists).length + getSelectedIds(selectedTracks).length;
 
   return (
@@ -118,10 +121,13 @@ function SelectScreen({
       </Head>
 
       <main className={styles.main}>
+        {showToast && <div className={toastStyles.toast}>Success ⚡️</div>}
+        {showErrorToast && <div className={`${toastStyles.toast} ${toastStyles.errorToast}`}>Something went wrong, please try again</div>}
         <select onChange={(e) => setSearchCategory(e.target.value as SearchCategory)} name="playableType" id="media">
           <option value={SearchCategory.Playlist}>Playlists</option>
           <option value={SearchCategory.Track}>Tracks</option>
       </select>
+
         {searchCategory === SearchCategory.Playlist ? playlists.map((playlist) => {
           const playlistSelected = selectedPlaylists[playlist.id];
 
@@ -160,6 +166,7 @@ function SelectScreen({
           );
 
         })}
+
         <SelectedTracksBanner
           onClick={(title: string) =>
             createPlaylist({
@@ -168,6 +175,9 @@ function SelectScreen({
               selectedPlaylistIds: getSelectedIds(selectedPlaylists),
               selectedTrackURIs: getTrackURIs(selectedTracks),
               title,
+              setPlaylists,
+              setTracks,
+              setShowToast,
             })
           }
           count={selectedCount}

@@ -1,4 +1,4 @@
-import { Track } from "../pages/select";
+import { Track, TrackMap, PlaylistMap } from "../pages/select";
 import getTracksForPlaylist from "./getTracksForPlaylist";
 
 type TrackWithMeta = {
@@ -16,12 +16,20 @@ export default async function createPlaylist({
   selectedPlaylistIds,
   title,
   selectedTrackURIs,
+  setTracks,
+  setPlaylists,
+  setShowToast,
+  setShowErrorToast,
 }: {
   accessToken: string,
   userId: string,
   selectedPlaylistIds: string[],
   selectedTrackURIs: string[],
-  title: string
+  title: string,
+  setTracks: (value: TrackMap) => void,
+  setPlaylists: (value: PlaylistMap) => void,
+  setShowToast: (value: boolean) => void,
+  setShowErrorToast: (value: boolean) => void,
 }) {
   // create new playlist
   const newPlaylistResponse = await fetch(
@@ -94,5 +102,16 @@ export default async function createPlaylist({
       }),
     }
   );
+
+  if (addItemsResponse.status >= 200 && addItemsResponse.status < 300) {
+    setPlaylists({})
+    setTracks({})
+    setShowToast(true)
+    setTimeout(() => setShowToast(false), 3000)
+  } else {
+    setShowErrorToast(true)
+    setTimeout(() => setShowErrorToast(false), 3000)
+  }
+
 }
 
