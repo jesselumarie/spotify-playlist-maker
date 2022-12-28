@@ -18,7 +18,7 @@ export function LogInButton() {
       onClick={() => redirectToSpotifyLogin({
         clientId: "5036cea918584f5d816f6d35923c4dcf",
         scopes: "user-read-private user-read-email user-read-recently-played user-top-read user-read-playback-position user-library-read playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative",
-        redirectUri: "http://localhost:3000/callback"
+        redirectUri: `${window.location.origin}/callback`
       })}
     >
       Log in with Spotify
