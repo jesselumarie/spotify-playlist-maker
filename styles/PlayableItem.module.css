@@ -9,7 +9,7 @@
 }
 
 .selectedItem {
-  border: 4px orange dashed;
+  border: 4px #1cb955 dashed;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -178,6 +178,7 @@ function SelectScreen({
               setPlaylists,
               setTracks,
               setShowToast,
+              setShowErrorToast,
             })
           }
           count={selectedCount}
