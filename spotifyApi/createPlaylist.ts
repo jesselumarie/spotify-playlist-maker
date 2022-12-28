@@ -1,14 +1,26 @@
+import { Track } from "../pages/select";
+import getTracksForPlaylist from "./getTracksForPlaylist";
+
+type TrackWithMeta = {
+  added_at: string
+  added_by : any,
+  is_local : boolean,
+  primary_color : string,
+  track : Track,
+  video_thumbnail : {url: string}
+}
+
 export default async function createPlaylist({
   accessToken,
   userId,
   selectedPlaylistIds,
-  playlistMap,
   title,
+  selectedTrackURIs,
 }: {
   accessToken: string,
   userId: string,
   selectedPlaylistIds: string[],
-  playlistMap: PlaylistMap,
+  selectedTrackURIs: string[],
   title: string
 }) {
   // create new playlist
@@ -30,7 +42,7 @@ export default async function createPlaylist({
 
   // TODO: handle pagination
   // get items for playlist
-  const trackRequestPromises = await selectedPlaylistIds.map(async (pid) => {
+  const trackRequestPromises = selectedPlaylistIds.map(async (pid) => {
     return getTracksForPlaylist({
       playlistId: pid,
       accessToken,
@@ -39,7 +51,7 @@ export default async function createPlaylist({
 
   const tracksGroupedByPlaylist = await Promise.all(trackRequestPromises);
 
-  let playlistToTracks = {};
+  let playlistToTracks: {[key: string]: Array<TrackWithMeta>} = {};
 
   selectedPlaylistIds.forEach((pid, index) => {
     playlistToTracks[pid] = [...tracksGroupedByPlaylist[index]]; // make a copy
@@ -48,7 +60,7 @@ export default async function createPlaylist({
   // loop through tracks and add to new playlist
   let stillTracksLeft = true;
 
-  let newPlaylistTracks = [];
+  let newPlaylistTracks: TrackWithMeta[] = [];
   while (stillTracksLeft) {
     let emptyTrackLists = 0;
     tracksGroupedByPlaylist.forEach((tracks) => {
@@ -64,9 +76,9 @@ export default async function createPlaylist({
     }
   }
 
-  const trackURIs = newPlaylistTracks.map((t) => {
+  const trackURIs = [...newPlaylistTracks.map((t) => {
     return t.track.uri;
-  });
+  }), ...selectedTrackURIs]
 
   // TODO: abstract away into chunked work
   const addItemsResponse = await fetch(

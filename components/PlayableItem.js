@@ -11,13 +11,12 @@ const PlayableItem = ({
     <div
       style={{
         display: "flex",
-        border: "solid black",
         borderRadius: 4,
         justifyContent: "space-between",
         width: "400px",
-        height: "100px",
         marginTop: "20px",
-        border: selected ? "0.k5rem orange dashed" : ""
+        padding: "8px",
+        border: selected ? "4px orange dashed" : ""
       }}
     >
       {imageUrl ? (
