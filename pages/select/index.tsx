@@ -166,7 +166,7 @@ function getComponentForSelection({searchCategory, playlists, selectedPlaylists,
               title={track.name}
               subtitle={track.artists.map((a) => a.name).join(',')}
               imageUrl={track.album.images[0]?.url}
-              key={track.id}
+              key={track.id + uuidv4()}
               selected={!!trackSelected}
               handleButtonClick={() => setTracks({
                   ...selectedTracks,
@@ -186,7 +186,7 @@ function getComponentForSelection({searchCategory, playlists, selectedPlaylists,
             <PlayableItem
               title={artist.name}
               imageUrl={artist?.images[0]?.url || ''}
-              key={artist.id}
+              key={artist.id + uuidv4()}
               selected={!!artistSelected}
               handleButtonClick={() => setArtists({
                   ...selectedArtists,
