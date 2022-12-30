@@ -17,7 +17,7 @@ export default async function createPlaylist({
   title,
   selectedTrackURIs,
   setTracks,
-  setPlaylists,
+  setPlaylistMap,
   setShowToast,
   setShowErrorToast,
 }: {
@@ -27,7 +27,7 @@ export default async function createPlaylist({
   selectedTrackURIs: string[],
   title: string,
   setTracks: (value: TrackMap) => void,
-  setPlaylists: (value: PlaylistMap) => void,
+  setPlaylistMap: (value: PlaylistMap) => void,
   setShowToast: (value: boolean) => void,
   setShowErrorToast: (value: boolean) => void,
 }) {
@@ -104,7 +104,7 @@ export default async function createPlaylist({
   );
 
   if (addItemsResponse.status >= 200 && addItemsResponse.status < 300) {
-    setPlaylists({})
+    setPlaylistMap({})
     setTracks({})
     setShowToast(true)
     setTimeout(() => setShowToast(false), 3000)

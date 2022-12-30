@@ -1,13 +1,23 @@
 import Image from "next/image";
+import { SearchCategory } from "../pages/select";
 import styles from "../styles/PlayableItem.module.css";
+
+type PlaybleItemProps = {
+  imageUrl: string | null,
+  title?: string,
+  subtitle?: string,
+  handleButtonClick: () => void,
+  selected: boolean,
+  category: SearchCategory,
+}
 
 const PlayableItem = ({
   imageUrl = null,
-  title = "Title",
-  subtitle = "Subtitle",
+  title = '',
+  subtitle = '',
   handleButtonClick,
   selected,
-}) => {
+}: PlaybleItemProps) => {
   const wrapperClass = `${styles.itemWrapper} ${selected ? styles.selectedItem : ''}`
   return (
     <div
