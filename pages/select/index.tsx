@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react"
 import { NextPageContext } from 'next'
 import Head from "next/head";
 import { PlayableItem } from "../../components/PlayableItem";
@@ -7,6 +7,7 @@ import createPlaylist from "../../spotifyApi/createPlaylist"
 import styles from "../../styles/Home.module.css";
 import toastStyles from "../../styles/Toast.module.css";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { v4 as uuidv4 } from 'uuid';
 
 
 interface TracksInfo {
@@ -144,7 +145,7 @@ function getComponentForSelection({searchCategory, playlists, selectedPlaylists,
               title={playlist.name}
               subtitle={playlist.owner.display_name}
               imageUrl={playlist.images[0]?.url}
-              key={playlist.id}
+              key={playlist.id + uuidv4()}
               selected={!!playlistSelected}
               handleButtonClick={() =>
                 setPlaylistMap({
@@ -218,6 +219,8 @@ function getItemsForType(searchCategory: SearchCategory, playlists: Playlist[], 
   }
 }
 
+const seenItems: {[key: string] :boolean} = {}
+
 function SelectScreen({
   accessToken = '',
   artistTotal,
@@ -243,6 +246,7 @@ function SelectScreen({
   const [showToast, setShowToast] = useState(false)
   const [showErrorToast, setShowErrorToast] = useState(false)
 
+
   const itemTotalLength = {
     [SearchCategory.Artist]: artistTotal,
     [SearchCategory.Playlist]: playlistTotal,
@@ -254,6 +258,8 @@ function SelectScreen({
     [SearchCategory.Playlist]: setPlaylists,
     [SearchCategory.Track]: setTracks,
   }
+
+
 
   const items = getItemsForType(searchCategory, playlists, tracks, artists)
   const itemsCurrentLength = items.length
@@ -282,6 +288,8 @@ function SelectScreen({
               // NOTE: setting this here so there won't be a race condition between
               // when updating the category and updating the item
               const currentSearchCategory = searchCategory
+              const currentItems = items
+
               const itemResponse = await fetch(
                 `${urlForSearchCategory[searchCategory]}?offset=${itemTotalLength[searchCategory]-items.length+1}`,
                 {
@@ -293,8 +301,9 @@ function SelectScreen({
 
               const itemJson = await itemResponse.json();
               const newItems = itemJson.items;
-            // @ts-expect-error TODO: type this
-              itemSetter[currentSearchCategory](items.concat(newItems))
+
+              // @ts-expect-error TODO: type this
+              itemSetter[currentSearchCategory](currentItems.concat(newItems))
           }}
           hasMore={itemsCurrentLength < itemTotalLength[searchCategory]}
           loader={<h4>Loading...</h4>}
@@ -420,18 +429,9 @@ SelectScreen.getInitialProps = async (ctx: NextPageContext): Promise<Props | red
   const artists = artistJson.items;
   const artistTotal = artistJson.total;
 
-  const artistMap = artists.reduce((acc: {[id: string]: TracksInfo}, t: TracksInfo) => {
-    if (t.id) {
-      acc[t.id] = t;
-    }
-    return acc;
-
-  }, {});
 
   return {
     accessToken,
-    artistJson,
-    artistMap,
     initialArtists: artists,
     displayName: meJson.display_name,
     playlistMap,
@@ -439,7 +439,6 @@ SelectScreen.getInitialProps = async (ctx: NextPageContext): Promise<Props | red
     playlistTotal,
     trackMap,
     initialTracks: tracks,
-    tracksJson,
     userId: meJson.id,
     artistTotal,
     trackTotal,
