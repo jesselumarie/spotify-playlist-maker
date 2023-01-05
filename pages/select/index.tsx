@@ -93,7 +93,7 @@ export enum SearchCategory {
 interface Props {
     initialPlaylists: Playlist[];
     userId: string;
-    accessToken: string | string[] | undefined;
+    accessToken: string,
     displayName: string,
     playlistMap: PlaylistMap;
     trackMap: TrackMap;
@@ -105,7 +105,7 @@ interface Props {
 }
 
 export interface GetTracksForPlaylistsArgs {
-  accessToken: string;
+  accessToken: string,
   playlistId: string;
 }
 
@@ -219,8 +219,6 @@ function getItemsForType(searchCategory: SearchCategory, playlists: Playlist[], 
   }
 }
 
-const seenItems: {[key: string] :boolean} = {}
-
 function SelectScreen({
   accessToken = '',
   artistTotal,
@@ -280,7 +278,7 @@ function SelectScreen({
         <select onChange={(e) => setSearchCategory(e.target.value as SearchCategory)} name="playableType" id="media">
           <option value={SearchCategory.Playlist}>Playlists</option>
           <option value={SearchCategory.Track}>Tracks</option>
-          <option value={SearchCategory.Artist}>Artists</option>
+          {/*<option value={SearchCategory.Artist}>Artists</option> */}
       </select>
         <InfiniteScroll
           dataLength={itemsCurrentLength} //This is important field to render the next data
@@ -355,7 +353,8 @@ type redirect = {
   }
 }
 SelectScreen.getInitialProps = async (ctx: NextPageContext): Promise<Props | redirect> => {
-  const { accessToken } = ctx.query || '';
+  const { accessToken: accessTokenRaw } = ctx.query || '';
+  const accessToken = Array.isArray(accessTokenRaw) ? accessTokenRaw.join(' ') : accessTokenRaw || ''
   const meResponse = await fetch("https://api.spotify.com/v1/me?limit=50", {
     headers: {
       Authorization: "Bearer " + accessToken,
