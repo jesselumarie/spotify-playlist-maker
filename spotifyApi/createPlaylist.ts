@@ -21,7 +21,7 @@ export default async function createPlaylist({
   setShowToast,
   setShowErrorToast,
 }: {
-  accessToken: string | string[],
+  accessToken: string,
   userId: string,
   selectedPlaylistIds: string[],
   selectedTrackURIs: string[],

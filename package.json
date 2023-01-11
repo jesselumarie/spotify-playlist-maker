@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "typecheck": "./node_modules/typescript/bin/tsc",
     "build": "next build",
     "start": "next start"
   },
